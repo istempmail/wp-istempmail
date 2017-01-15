@@ -156,7 +156,8 @@ class IsTempMail_Plugin
     protected function isDea($email)
     {
         $token = get_option('istempmail_token');
-        $domain=end(explode('@', $email));
+        $parts = explode('@', $email);
+        $domain = end($parts);
 
         if ($token) {
             $url = self::API_ROOT . '/check/' . $domain . '?token=' . $token;
