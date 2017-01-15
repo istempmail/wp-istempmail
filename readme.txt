@@ -45,7 +45,7 @@ No, we don't. The plugin will only send the domain part of email address to vali
 The submitted email is valid by default. So even when the service is temporarily down, users can register, log in
 and comment on your blog just fine.
 
-Any existing users registered with fake email address will unable to log in to your blog when the service is up and working.
+Any existing users registered with fake email address won't be able to log in to your blog when the service is up and working.
 This is a little punishment for using temporary email address. They won't mind, because they'll never remember
 which disposable email address was used to flood your website database.
 
