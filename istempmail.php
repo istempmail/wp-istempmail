@@ -1,8 +1,8 @@
 <?php
 /*
-  Plugin Name: IsTempMail
-  Plugin URI: https://wordpress.org/plugins/istempmail/
-  Description: This plugin will detect and block disposable email address (DEA) up on registration and comment.
+  Plugin Name: Block Temporary Email
+  Plugin URI: https://github.com/istempmail/wp-istempmail
+  Description: This plugin will detect and block disposable, temporary, fake email addresses every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>. It will work immediately after activated. You do not need to register, pay or subscribe to IsTempMail service.
   Version: 1.0
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/

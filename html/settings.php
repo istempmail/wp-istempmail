@@ -32,7 +32,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     <input type="text" class="regular-text" id="istempmail_token" name="istempmail_token" value="<?php echo esc_attr(get_option('istempmail_token')); ?>" />
                     <p class="description">
                         <?php
-                        printf(__('Get your private API token at %s.', 'istempmail'),
+                        printf(__('Get your API token at %s to check 60 emails per minute.', 'istempmail'),
                             '<a href="https://www.istempmail.com/sign-in">IsTempMail</a>'
                         );
                         ?>
