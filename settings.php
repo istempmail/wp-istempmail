@@ -3,13 +3,13 @@ defined('ABSPATH') or die('Nope nope nope...');
 ?>
 
 <div class="wrap">
-    <h2><?php _e('IsTempMail Settings', 'istempmail') ?></h2>
+    <h2><?php _e('IsTempMail Settings', 'block-temporary-email') ?></h2>
 
     <?php if(!get_option('istempmail_token')) { ?>
         <div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
             <p>
-                <strong><?php _e('The plugin will work fine without an API token.', 'istempmail'); ?></strong>
-                <?php printf(__('We\'ll use the <a href="%s">public API endpoint</a> which is free and limits <strong>10 email checks per minute</strong>.', 'istempmail'), 'https://www.istempmail.com/') ?>
+                <strong><?php _e('The plugin will work fine without an API token.', 'block-temporary-email'); ?></strong>
+                <?php printf(__('We\'ll use the <a href="%s">public API endpoint</a> which is free and limits <strong>10 email checks per minute</strong>.', 'block-temporary-email'), 'https://www.istempmail.com/') ?>
 
             </p>
             <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
@@ -25,14 +25,14 @@ defined('ABSPATH') or die('Nope nope nope...');
             <tr valign="top">
                 <th scope="row">
                     <label for="istempmail_token">
-                        <?php _e('IsTempMail API token', 'istempmail') ?>
+                        <?php _e('IsTempMail API token', 'block-temporary-email') ?>
                     </label>
                 </th>
                 <td>
                     <input type="text" class="regular-text" id="istempmail_token" name="istempmail_token" value="<?php echo esc_attr(get_option('istempmail_token')); ?>" />
                     <p class="description">
                         <?php
-                        printf(__('Get your API token at %s to check 60 emails per minute.', 'istempmail'),
+                        printf(__('Get your API token at %s to check 60 emails per minute.', 'block-temporary-email'),
                             '<a href="https://www.istempmail.com/sign-in">IsTempMail</a>'
                         );
                         ?>

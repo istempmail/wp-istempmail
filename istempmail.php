@@ -3,11 +3,11 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://github.com/istempmail/wp-istempmail
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>. <strong>It will work immediately after activated</strong>. You do not need to register, pay or subscribe to IsTempMail service.
-  Version: 1.0
+  Version: 1.0.1
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
-  Text Domain: istempmail
+  Text Domain: block-temporary-email
  */
 
 # NOPE #
@@ -42,7 +42,7 @@ class IsTempMail_Plugin
 
     public function loadTextDomain()
     {
-        load_plugin_textdomain('istempmail');
+        load_plugin_textdomain('block-temporary-email');
     }
 
     public function activate()
@@ -57,7 +57,7 @@ class IsTempMail_Plugin
     public function menu()
     {
         add_options_page(
-            __('IsTempMail Settings', 'istempmail'), // page title,
+            __('IsTempMail Settings', 'block-temporary-email'), // page title,
             'IsTempMail', // menu item,
             'manage_options', // capability
             'istempmail-settings', // slug
@@ -74,7 +74,7 @@ class IsTempMail_Plugin
         }
 
         if ($plugin == $plugin_file) {
-            $settings = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=istempmail-settings')) . '">' . __('Settings', 'istempmail') . '</a>';
+            $settings = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=istempmail-settings')) . '">' . __('Settings', 'block-temporary-email') . '</a>';
 
             $actions = array_merge(array(
                 'settings' => $settings,
@@ -120,7 +120,7 @@ class IsTempMail_Plugin
             return true;
         }
 
-        $errorMessage = sprintf(__('Token error: %s', 'istempmail'), $dataObj->error_description);
+        $errorMessage = sprintf(__('Token error: %s', 'block-temporary-email'), $dataObj->error_description);
 
         add_settings_error('istempmail_token', $dataObj->error, $errorMessage);
 
@@ -130,7 +130,7 @@ class IsTempMail_Plugin
     public function deaError($errors)
     {
         if (self::$deaFound) {
-            $message = __('We will not spam or share your email. <strong>Please do not use disposable email address</strong>. Thank you!', 'istempmail');
+            $message = __('We will not spam or share your email. <strong>Please do not use disposable email address</strong>. Thank you!', 'block-temporary-email');
 
             if ($errors instanceof WP_Error) {
                 $errors->add('disposable_email', $message);
