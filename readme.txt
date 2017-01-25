@@ -3,7 +3,7 @@ Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
 Tested up to: 4.7.1
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 
 This plugin will detect and block disposable, temporary, fake email addresses every time an email is submitted.
@@ -13,8 +13,10 @@ When installed and activated, the plugin will verify every email address submitt
 and block disposable, temporary email. It'll give a nice warning message when users are signing up, logging in,
 or changing email to a fake email.
 
-It does not use local blacklist, but checks domain name against a service named
+It checks domain name against a service named
 [IsTempMail](https://www.istempmail.com/).
+If the domain name is blocked, it'll store it into your local blacklist.
+You can also update your own local whitelist and blacklist.
 
 The plugin will work right after installed and activated.
 
@@ -42,13 +44,18 @@ its public API by default, which limits 10 emails check per minute.
 No, we don't. The plugin will only send the domain part of email address to validate.
 
 = What happens if the service is down? =
+It will continue to validate emails using local blacklist and whitelist.
 The submitted emails are valid by default. So even when the service is temporarily down, users can register, log in
 and comment on your blog just fine.
 
+= What happens to existing users with fake email address =
 Existing users registered with fake email address won't be able to log in to your blog when the service is up and working.
 This is a little punishment for using temporary email addresses. They won't mind, because they'll never remember
 which disposable email address was used to flood your website database.
 
 == Changelog ==
-= 1.0.0 =
+= 1.1 =
+- Add local blacklist and whitelist.
+
+= 1.0 =
 First version

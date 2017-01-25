@@ -2,8 +2,8 @@
 /*
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
-  Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>. <strong>It will work immediately after activated</strong>. You do not need to register, pay or subscribe to IsTempMail service.
-  Version: 1.0.1
+  Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>, and maintains its own local blacklist. <strong>It will work immediately after activated</strong>. You do not need to register, pay or subscribe to IsTempMail service.
+  Version: 1.1.0
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -13,7 +13,8 @@
 # NOPE #
 defined('ABSPATH') or die('Nope nope nope...');
 
-$isTempMailPlugin=new IsTempMailPlugin();
+$isTempMailPlugin = new IsTempMailPlugin();
+
 //End of main flow.
 
 class IsTempMailPlugin
@@ -51,6 +52,15 @@ class IsTempMailPlugin
 
         if (!$token || !$this->isValidToken($token)) {
             update_option('istempmail_token', '');
+        }
+
+        if (!get_option('istempmail_whitelist')) {
+            $email = explode('@', wp_get_current_user()->user_email);
+            update_option('istempmail_whitelist', end($email), false);
+        }
+
+        if (!get_option('istempmail_blacklist')) {
+            update_option('istempmail_blacklist', '', false);
         }
     }
 
@@ -92,6 +102,8 @@ class IsTempMailPlugin
     public function settings()
     {
         register_setting('istempmail-settings-group', 'istempmail_token', array($this, 'validateToken'));
+        register_setting('istempmail-settings-group', 'istempmail_whitelist', array($this, 'cleanList'));
+        register_setting('istempmail-settings-group', 'istempmail_blacklist', array($this, 'cleanList'));
     }
 
     public function validateToken($token)
@@ -127,6 +139,13 @@ class IsTempMailPlugin
         return false;
     }
 
+    public function cleanList($list)
+    {
+        $cleanList=array_unique(array_filter(array_map('trim', explode("\n", $list))));
+        natcasesort($cleanList);
+        return implode("\n", $cleanList);
+    }
+
     public function deaError($errors)
     {
         if (self::$deaFound) {
@@ -155,10 +174,27 @@ class IsTempMailPlugin
 
     protected function isDea($email)
     {
-        $token = get_option('istempmail_token');
         $parts = explode('@', $email);
         $domain = end($parts);
 
+        $blacklist = explode("\n", get_option('istempmail_blacklist'));
+        $whitelist = explode("\n", get_option('istempmail_whitelist'));
+
+        $nameArr = explode('.', $domain);
+        for ($i = 2; $i <= count($nameArr); $i++) {
+            $name = implode('.', array_slice($nameArr, -$i));
+
+            if (in_array($name, $whitelist)) {
+                return false;
+            }
+
+            if (in_array($name, $blacklist)) {
+                self::$deaFound = true;
+                return true;
+            }
+        }
+
+        $token = get_option('istempmail_token');
         if ($token) {
             $url = self::API_ROOT . '/check/' . $domain . '?token=' . $token;
         } else {
@@ -172,6 +208,11 @@ class IsTempMailPlugin
 
         if ($dataObj && $dataObj->blocked) {
             self::$deaFound = true;
+
+            $blacklist[] = $dataObj->name;
+            array_filter($blacklist);
+            update_option('istempmail_blacklist', implode("\n", $blacklist));
+
             return true;
         }
 

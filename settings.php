@@ -39,8 +39,47 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </p>
                 </td>
             </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="istempmail_whitelist">
+                        <?php _e('Local white list', 'block-temporary-email') ?> (<?php echo count(explode("\n", get_option('istempmail_whitelist'))); ?>)
+                    </label>
+                </th>
+                <td>
+                    <textarea rows="3" class="regular-text" id="istempmail_whitelist" name="istempmail_whitelist"><?php echo esc_attr(get_option('istempmail_whitelist')); ?></textarea>
+                    <p class="description"><?php _e('One domain name per line.', 'block-temporary-email') ?></p>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="istempmail_blacklist">
+                        <?php _e('Local black list', 'block-temporary-email') ?> (<?php echo count(explode("\n", get_option('istempmail_blacklist'))); ?>)
+                    </label>
+                </th>
+                <td>
+                    <textarea rows="3" class="regular-text" id="istempmail_blacklist" name="istempmail_blacklist"><?php echo esc_attr(get_option('istempmail_blacklist')); ?></textarea>
+                    <p class="description"><?php _e('One domain name per line. We will automatically store detected DEA domain name here.', 'block-temporary-email') ?></p>
+                </td>
+            </tr>
         </table>
         
         <?php submit_button(); ?>
     </form>
+
+    <p>
+        <?php
+        printf(__('Thank you for using <a href="%s">Block Temporary Email</a> plugin by <a href="%s">IsTempMail</a> .', 'block-temporary-email'),
+            'https://wordpress.org/plugins/block-temporary-email/',
+            'https://www.istempmail.com/'
+        );
+        ?>
+    </p>
+    <p><?php _e('Please help us spread the world!', 'block-temporary-email'); ?></p>
+    <p>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=istempmail.com" target="_blank"><?php _e('Share on Facebook', 'block-temporary-email') ?></a> &middot;
+        <a href="https://twitter.com/intent/tweet?text=@istempmail" target="_blank"><?php _e('Share on Twitter', 'block-temporary-email') ?></a> &middot;
+
+        <a href="https://www.facebook.com/istempmail" target="_blank"><?php _e('Like us on Facebook', 'block-temporary-email') ?></a> &middot;
+        <a href="https://twitter.com/istempmail" target="_blank"><?php _e('Follow us on Twitter', 'block-temporary-email') ?></a></a>
+    </p>
 </div>
