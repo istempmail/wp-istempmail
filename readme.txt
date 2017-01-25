@@ -25,7 +25,7 @@ No need to register, pay or subscribe. It uses the public API provided by IsTemp
 For bigger websites flooded with fake emails, premium plans are available.
 
 == Installation ==
-Upload the IsTempMail plugin to your blog, then click Activate it, and it'll work immediately.
+Upload the plugin to your blog, then click Activate it, and it'll work immediately.
 
 If you have registered an account and get an API token at [IsTempMail](https://www.istempmail.com/sign-in),
 you can enter it at your WordPress Dashboard > Settings > IsTempMail.
