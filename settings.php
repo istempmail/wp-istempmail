@@ -9,8 +9,7 @@ defined('ABSPATH') or die('Nope nope nope...');
         <div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
             <p>
                 <strong><?php _e('The plugin will work fine without an API token.', 'block-temporary-email'); ?></strong>
-                <?php printf(__('We\'ll use the <a href="%s">public API endpoint</a> which is free and limits <strong>10 email checks per minute</strong>.', 'block-temporary-email'), 'https://www.istempmail.com/') ?>
-
+                <?php printf(__('We\'ll use the <a href="%s">public API endpoint</a> which is free and limits <strong>10 email checks per minute</strong>.', 'block-temporary-email'), 'https://www.istempmail.com/'); ?>
             </p>
             <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
         </div>
@@ -19,7 +18,7 @@ defined('ABSPATH') or die('Nope nope nope...');
     <form method="post" action="options.php">
         <?php settings_fields('istempmail-settings-group'); ?>
 
-        <?php do_settings_sections('istempmail-settings-group'); ?>
+        <?php do_settings_sections('istempmail-settings'); ?>
 
         <table class="form-table">
             <tr valign="top">
@@ -42,7 +41,7 @@ defined('ABSPATH') or die('Nope nope nope...');
             <tr valign="top">
                 <th scope="row">
                     <label for="istempmail_whitelist">
-                        <?php _e('Local white list', 'block-temporary-email') ?> (<?php echo count(explode("\n", get_option('istempmail_whitelist'))); ?>)
+                        <?php _e('Local white list', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_whitelist')))); ?>)
                     </label>
                 </th>
                 <td>
@@ -53,7 +52,7 @@ defined('ABSPATH') or die('Nope nope nope...');
             <tr valign="top">
                 <th scope="row">
                     <label for="istempmail_blacklist">
-                        <?php _e('Local black list', 'block-temporary-email') ?> (<?php echo count(explode("\n", get_option('istempmail_blacklist'))); ?>)
+                        <?php _e('Local black list', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_blacklist')))); ?>)
                     </label>
                 </th>
                 <td>
@@ -77,7 +76,7 @@ defined('ABSPATH') or die('Nope nope nope...');
     <p><?php _e('Please help us spread the world!', 'block-temporary-email'); ?></p>
     <p>
         <a href="https://www.facebook.com/sharer/sharer.php?u=istempmail.com" target="_blank"><?php _e('Share on Facebook', 'block-temporary-email') ?></a> &middot;
-        <a href="https://twitter.com/intent/tweet?text=@istempmail" target="_blank"><?php _e('Share on Twitter', 'block-temporary-email') ?></a> &middot;
+        <a href="https://twitter.com/intent/tweet?text=Block disposable, fake email addresses on WordPress by @istempmail https://wordpress.org/plugins/block-temporary-email/" target="_blank"><?php _e('Share on Twitter', 'block-temporary-email') ?></a> &middot;
 
         <a href="https://www.facebook.com/istempmail" target="_blank"><?php _e('Like us on Facebook', 'block-temporary-email') ?></a> &middot;
         <a href="https://twitter.com/istempmail" target="_blank"><?php _e('Follow us on Twitter', 'block-temporary-email') ?></a></a>
