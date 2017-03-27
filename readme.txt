@@ -2,8 +2,8 @@
 Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
-Tested up to: 4.7.1
-Stable tag: 1.1
+Tested up to: 4.7.3
+Stable tag: 1.2
 License: GPLv2 or later
 
 This plugin will detect and block disposable, temporary, fake email addresses every time an email is submitted.
@@ -23,6 +23,9 @@ The plugin will work right after installed and activated.
 No need to register, pay or subscribe. It uses the public API provided by IsTempMail by default. The only limit is
 10 email checks per minute, that is sufficient for personal blogs.
 For bigger websites flooded with fake emails, premium plans are available.
+
+The plugin integrates with the `is_email()` function of WordPress.  works seamlessly with WooCommerce, Contact Form 7,
+Gravity Form, Jetpack/Grunion contact forms, WordPress registration form and any form which uses the `is_email()` function.
 
 == Installation ==
 Upload the plugin to your blog, then click Activate it, and it'll work immediately.
@@ -54,8 +57,12 @@ This is a little punishment for using temporary email addresses. They won't mind
 which disposable email address was used to flood your website database.
 
 == Changelog ==
+= 1.2 =
+If a domain name has no MX record and doesn't resolve to any IP address, it will be marked as "unresolvable"
+ and the email will be considered as invalid. It helps in preventing some typos like gmail.con or gmail.comm.
+
 = 1.1 =
-- Add local blacklist and whitelist.
+Add local blacklist and whitelist.
 
 = 1.0 =
 First version
