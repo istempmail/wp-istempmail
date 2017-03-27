@@ -24,7 +24,7 @@ No need to register, pay or subscribe. It uses the public API provided by IsTemp
 10 email checks per minute, that is sufficient for personal blogs.
 For bigger websites flooded with fake emails, premium plans are available.
 
-The plugin integrates with the `is_email()` function of WordPress.  works seamlessly with WooCommerce, Contact Form 7,
+The plugin integrates with the `is_email()` function of WordPress. It works seamlessly with WooCommerce, Contact Form 7,
 Gravity Form, Jetpack/Grunion contact forms, WordPress registration form and any form which uses the `is_email()` function.
 
 == Installation ==
