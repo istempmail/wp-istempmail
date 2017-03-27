@@ -220,7 +220,7 @@ class IsTempMailPlugin
             return true;
         }
 
-        if($dataObj->unresolvable) {
+        if(isset($dataObj->unresolvable)) {
             return true;
         }
 
