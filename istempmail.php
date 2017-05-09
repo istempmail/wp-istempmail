@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>, and maintains its own local blacklist. <strong>It will work immediately after activated</strong>. You do not need to register, pay or subscribe to IsTempMail service.
-  Version: 1.2.0
+  Version: 1.3.0
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -62,6 +62,10 @@ class IsTempMailPlugin
         if (!get_option('istempmail_blacklist')) {
             update_option('istempmail_blacklist', '', false);
         }
+
+        if (get_option('istempmail_check') === false) {
+            update_option('istempmail_check', 1, false);
+        }
     }
 
     public function menu()
@@ -104,6 +108,7 @@ class IsTempMailPlugin
         register_setting('istempmail-settings-group', 'istempmail_token', array($this, 'validateToken'));
         register_setting('istempmail-settings-group', 'istempmail_whitelist', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_blacklist', array($this, 'cleanList'));
+        register_setting('istempmail-settings-group', 'istempmail_check');
     }
 
     public function validateToken($token)
@@ -169,14 +174,29 @@ class IsTempMailPlugin
             return $isEmail;
         }
 
-        return !$this->isDea($email);
-    }
-
-    protected function isDea($email)
-    {
         $parts = explode('@', $email);
         $domain = end($parts);
 
+        if (get_option('istempmail_check'))
+        {
+            // check if this email is submitted by user
+            $isSubmitted = false;
+            foreach ($_POST + $_GET as $value) {
+                if (strpos($value, $domain)) {
+                    $isSubmitted = true;
+                }
+            }
+
+            if (!$isSubmitted) {
+                return true;
+            }
+        }
+
+        return !$this->isDea($domain);
+    }
+
+    protected function isDea($domain)
+    {
         $blacklist = explode("\n", get_option('istempmail_blacklist'));
         $whitelist = explode("\n", get_option('istempmail_whitelist'));
 

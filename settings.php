@@ -60,6 +60,25 @@ defined('ABSPATH') or die('Nope nope nope...');
                     <p class="description"><?php _e('One domain name per line. We will automatically store detected DEA domain name here.', 'block-temporary-email') ?></p>
                 </td>
             </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <?php _e('Hook behavior', 'block-temporary-email') ?>
+                </th>
+                <td>
+                    <p>
+                        <label for="istempmail_check_all">
+                            <input type="radio" id="istempmail_check_all" name="istempmail_check" value="0" <?php get_option('istempmail_check') or print('checked') ?> />
+                            <?php _e('Check all emails', 'block-temporary-email') ?>
+                        </label>
+                        <br />
+
+                        <label for="istempmail_check_submitted">
+                            <input type="radio" id="istempmail_check_submitted" name="istempmail_check" value="1" <?php get_option('istempmail_check') and print('checked') ?> />
+                            <?php _e('Check only emails submitted via browsers', 'block-temporary-email') ?>
+                        </label>
+                    </p>
+                </td>
+            </tr>
         </table>
         
         <?php submit_button(); ?>

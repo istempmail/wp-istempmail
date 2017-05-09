@@ -2,23 +2,23 @@
 Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
-Tested up to: 4.7.3
-Stable tag: 1.2
+Tested up to: 4.7.4
+Stable tag: 1.3
 License: GPLv2 or later
 
 This plugin will detect and block disposable, temporary, fake email addresses every time an email is submitted.
 
 == Description ==
 When installed and activated, the plugin will verify every email address submitted by users. It'll automatically detect
-and block disposable, temporary email. It'll give a nice warning message when users are signing up, logging in,
+and block disposable, temporary emails. It'll give a nice warning message when users are signing up, logging in,
 or changing email to a fake email.
 
-It checks domain name against a service named
+It checks only the domain name against a service named
 [IsTempMail](https://www.istempmail.com/).
 If the domain name is blocked, it'll store it into your local blacklist.
 You can also update your own local whitelist and blacklist.
 
-The plugin will work right after installed and activated.
+The plugin works right after installed and activated.
 
 No need to register, pay or subscribe. It uses the public API provided by IsTempMail by default. The only limit is
 10 email checks per minute, that is sufficient for personal blogs.
@@ -57,6 +57,10 @@ This is a little punishment for using temporary email addresses. They won't mind
 which disposable email address was used to flood your website database.
 
 == Changelog ==
+= 1.3 =
+In prior versions, it'll check all emails passed to `is_email()` function.
+You can now change the Hook behavior to check only emails submitted via browsers (POST/GET values).
+
 = 1.2 =
 If a domain name has no MX record and doesn't resolve to any IP address, it will be marked as "unresolvable"
  and the email will be considered as invalid. It helps in preventing some typos like gmail.con or gmail.comm.
