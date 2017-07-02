@@ -2,7 +2,7 @@
 Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
-Tested up to: 4.7.4
+Tested up to: 4.8
 Stable tag: 1.3
 License: GPLv2 or later
 
@@ -41,7 +41,7 @@ you can enter it at your WordPress Dashboard > Settings > IsTempMail.
 == Frequently Asked Questions ==
 = Is the plugin free? =
 Yes, the plugin is completely free. You do not need to register, pay or subscribe to IsTempMail. We'll use
-its public API by default, which limits 10 emails check per minute.
+its public API by default, which limits 10 email checks per minute.
 
 = Do you send my user emails to other servers? =
 No, we don't. The plugin will only send the domain part of email address to validate.

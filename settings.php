@@ -57,7 +57,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                 </th>
                 <td>
                     <textarea rows="3" class="regular-text" id="istempmail_blacklist" name="istempmail_blacklist"><?php echo esc_attr(get_option('istempmail_blacklist')); ?></textarea>
-                    <p class="description"><?php _e('One domain name per line. We will automatically store detected DEA domain name here.', 'block-temporary-email') ?></p>
+                    <p class="description"><?php _e('One domain name per line. We will automatically store detected DEA domain names here.', 'block-temporary-email') ?></p>
                 </td>
             </tr>
             <tr valign="top">
