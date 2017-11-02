@@ -5,16 +5,6 @@ defined('ABSPATH') or die('Nope nope nope...');
 <div class="wrap">
     <h2><?php _e('IsTempMail Settings', 'block-temporary-email') ?></h2>
 
-    <?php if(!get_option('istempmail_token')) { ?>
-        <div id="setting-error-settings_updated" class="updated settings-error notice is-dismissible">
-            <p>
-                <strong><?php _e('The plugin will work fine without an API token.', 'block-temporary-email'); ?></strong>
-                <?php printf(__('We\'ll use the <a href="%s">public API endpoint</a> which is free and limits <strong>10 email checks per minute</strong>.', 'block-temporary-email'), 'https://www.istempmail.com/'); ?>
-            </p>
-            <button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button>
-        </div>
-    <?php } ?>
-
     <form method="post" action="options.php">
         <?php settings_fields('istempmail-settings-group'); ?>
 

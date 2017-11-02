@@ -6,11 +6,13 @@ Tested up to: 4.8
 Stable tag: 1.3
 License: GPLv2 or later
 
-This plugin will detect and block disposable, temporary, fake email addresses every time an email is submitted.
+This plugin will detect and block disposable, temporary, fake email addresses
+every time an email is submitted.
 
 == Description ==
-When installed and activated, the plugin will verify every email address submitted by users. It'll automatically detect
-and block disposable, temporary emails. It'll give a nice warning message when users are signing up, logging in,
+When installed and activated, the plugin will verify every email address submitted by users.
+It'll automatically detect and block disposable, temporary emails.
+It'll give a nice warning message when users are signing up, logging in,
 or changing email to a fake email.
 
 It checks only the domain name against a service named
@@ -18,31 +20,23 @@ It checks only the domain name against a service named
 If the domain name is blocked, it'll store it into your local blacklist.
 You can also update your own local whitelist and blacklist.
 
-The plugin works right after installed and activated.
-
-No need to register, pay or subscribe. It uses the public API provided by IsTempMail by default. The only limit is
-10 email checks per minute, that is sufficient for personal blogs.
-For bigger websites flooded with fake emails, premium plans are available.
-
-The plugin integrates with the `is_email()` function of WordPress. It works seamlessly with WooCommerce, Contact Form 7,
-Gravity Form, Jetpack/Grunion contact forms, WordPress registration form and any form which uses the `is_email()` function.
+The plugin integrates with the `is_email()` function of WordPress.
+It works seamlessly with WooCommerce, Contact Form 7,
+Gravity Form, Jetpack/Grunion contact forms,
+WordPress registration form and any form which uses the `is_email()` function.
 
 == Installation ==
 Upload the plugin to your blog, then click Activate it, and it'll work immediately.
 
-If you have registered an account and get an API token at [IsTempMail](https://www.istempmail.com/sign-in),
-you can enter it at your WordPress Dashboard > Settings > IsTempMail.
+Register and get your API token at [IsTempMail](https://www.istempmail.com/sign-in),
+then enter it at your WordPress Dashboard > Settings > IsTempMail.
 
 == Screenshots ==
 1. No disposable email address when signing up
 2. No temporary email address when updating profile
-3. No need to register, pay or subscribe.
+3. Manage local blacklist and whitelist
 
 == Frequently Asked Questions ==
-= Is the plugin free? =
-Yes, the plugin is completely free. You do not need to register, pay or subscribe to IsTempMail. We'll use
-its public API by default, which limits 10 email checks per minute.
-
 = Do you send my user emails to other servers? =
 No, we don't. The plugin will only send the domain part of email address to validate.
 

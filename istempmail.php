@@ -2,8 +2,8 @@
 /*
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
-  Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name against IsTempMail service using its <a href="https://www.istempmail.com/">public API</a>, and maintains its own local blacklist. <strong>It will work immediately after activated</strong>. You do not need to register, pay or subscribe to IsTempMail service.
-  Version: 1.3.0
+  Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
+  Version: 1.3.1
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
