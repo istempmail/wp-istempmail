@@ -5,6 +5,14 @@ defined('ABSPATH') or die('Nope nope nope...');
 <div class="wrap">
     <h2><?php _e('IsTempMail Settings', 'block-temporary-email') ?></h2>
 
+    <?php if(!get_option('istempmail_token')) { ?>
+        <div id="setting-error-settings_updated" class="settings-error error">
+            <p>
+                <?php printf(__('Get your API token at <a href="%s">IsTempMail</a>.', 'block-temporary-email'), 'https://www.istempmail.com/'); ?>
+            </p>
+        </div>
+    <?php } ?>
+
     <form method="post" action="options.php">
         <?php settings_fields('istempmail-settings-group'); ?>
 
@@ -18,14 +26,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </label>
                 </th>
                 <td>
-                    <input type="text" class="regular-text" id="istempmail_token" name="istempmail_token" value="<?php echo esc_attr(get_option('istempmail_token')); ?>" />
-                    <p class="description">
-                        <?php
-                        printf(__('Get your API token at %s to check 60 emails per minute.', 'block-temporary-email'),
-                            '<a href="https://www.istempmail.com/sign-in">IsTempMail</a>'
-                        );
-                        ?>
-                    </p>
+                    <input type="text" required="required" class="regular-text" id="istempmail_token" name="istempmail_token" value="<?php echo esc_attr(get_option('istempmail_token')); ?>" />
                 </td>
             </tr>
             <tr valign="top">

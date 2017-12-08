@@ -10,7 +10,7 @@ This plugin will detect and block disposable, temporary, fake email addresses
 every time an email is submitted.
 
 == Description ==
-When installed and activated, the plugin will verify every email address submitted by users.
+This plugin will verify every email address submitted by users.
 It'll automatically detect and block disposable, temporary emails.
 It'll give a nice warning message when users are signing up, logging in,
 or changing email to a fake email.
@@ -18,7 +18,7 @@ or changing email to a fake email.
 It checks only the domain name against a service named
 [IsTempMail](https://www.istempmail.com/).
 If the domain name is blocked, it'll store it into your local blacklist.
-You can also update your own local whitelist and blacklist.
+You can also update your local whitelist and blacklist.
 
 The plugin integrates with the `is_email()` function of WordPress.
 It works seamlessly with WooCommerce, Contact Form 7,
@@ -26,10 +26,10 @@ Gravity Form, Jetpack/Grunion contact forms,
 WordPress registration form and any form which uses the `is_email()` function.
 
 == Installation ==
-Upload the plugin to your blog, then click Activate it, and it'll work immediately.
+Sign up and get your API token at [IsTempMail](https://www.istempmail.com/sign-up).
 
-Register and get your API token at [IsTempMail](https://www.istempmail.com/sign-in),
-then enter it at your WordPress Dashboard > Settings > IsTempMail.
+Upload the plugin to your blog, then click Activate it,
+and enter the API token at your WordPress Dashboard > Settings > IsTempMail.
 
 == Screenshots ==
 1. No disposable email address when signing up
@@ -42,7 +42,8 @@ No, we don't. The plugin will only send the domain part of email address to vali
 
 = What happens if the service is down? =
 It will continue to validate emails using local blacklist and whitelist.
-The submitted emails are valid by default. So even when the service is temporarily down, users can register, log in
+The submitted emails are valid by default.
+So even when the service is temporarily down, users can register, log in
 and comment on your blog just fine.
 
 = What happens to existing users with fake email address =

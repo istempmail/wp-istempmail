@@ -19,7 +19,7 @@ $isTempMailPlugin = new IsTempMailPlugin();
 
 class IsTempMailPlugin
 {
-    const API_ROOT = 'https://www.istempmail.com/api';
+    const API_CHECK = 'https://www.istempmail.com/api/check/';
 
     static $deaFound = false;
 
@@ -122,7 +122,7 @@ class IsTempMailPlugin
 
     public function isValidToken($token)
     {
-        $url = self::API_ROOT . '/check/example.com?token=' . $token;
+        $url = self::API_CHECK . 'example.com?token=' . $token;
 
         $response = wp_remote_get($url, array('timeout' => 60));
         $responseBody = wp_remote_retrieve_body($response);
@@ -215,11 +215,11 @@ class IsTempMailPlugin
         }
 
         $token = get_option('istempmail_token');
-        if ($token) {
-            $url = self::API_ROOT . '/check/' . $domain . '?token=' . $token;
-        } else {
-            $url = self::API_ROOT . '-public/check/' . $domain;
+        if (!$token) {
+            return false;
         }
+
+        $url = self::API_CHECK . $domain . '?token=' . $token;
 
         $response = wp_remote_get($url, array('timeout' => 60));
         $responseBody = wp_remote_retrieve_body($response);
