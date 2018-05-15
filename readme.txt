@@ -3,7 +3,7 @@ Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
 Tested up to: 4.8
-Stable tag: 1.3
+Stable tag: 1.4
 License: GPLv2 or later
 
 This plugin will detect and block disposable, temporary, fake email addresses
