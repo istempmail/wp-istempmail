@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.4
+  Version: 1.4.1
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -150,7 +150,7 @@ class IsTempMailPlugin
 
     public function cleanList($list)
     {
-        $cleanList=array_unique(array_filter(array_map('trim', explode("\n", $list))));
+        $cleanList = array_unique(array_filter(array_map('trim', explode("\n", $list))));
         natcasesort($cleanList);
         return implode("\n", $cleanList);
     }
@@ -172,6 +172,7 @@ class IsTempMailPlugin
         return $errors;
     }
 
+    private $requestContents;
     public function deaEmailCheck($isEmail, $email)
     {
         if (!$isEmail) {
@@ -181,17 +182,13 @@ class IsTempMailPlugin
         $parts = explode('@', $email);
         $domain = end($parts);
 
-        if (get_option('istempmail_check'))
-        {
+        if (get_option('istempmail_check')) {
             // check if this email is submitted by user
-            $isSubmitted = false;
-            foreach ($_POST + $_GET as $value) {
-                if (strpos($value, $domain)) {
-                    $isSubmitted = true;
-                }
+            if($this->requestContents === null) {
+                $this->requestContents = json_encode($_POST + $_GET);
             }
 
-            if (!$isSubmitted) {
+            if (!stripos($this->requestContents, $domain)) {
                 return true;
             }
         }
@@ -231,7 +228,7 @@ class IsTempMailPlugin
 
         $dataObj = @json_decode($responseBody);
 
-        if(!$dataObj) {
+        if (!$dataObj) {
             return false;
         }
 
@@ -245,7 +242,7 @@ class IsTempMailPlugin
             return true;
         }
 
-        if(isset($dataObj->unresolvable)) {
+        if (isset($dataObj->unresolvable)) {
             return true;
         }
 
