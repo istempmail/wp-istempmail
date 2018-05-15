@@ -17,8 +17,8 @@ or changing email to a fake email.
 
 It checks only the domain name against a service named
 [IsTempMail](https://www.istempmail.com/).
-If the domain name is blocked, it'll store it into your local blacklist.
-You can also update your local whitelist and blacklist.
+If a domain name is blocked, it will be stored into a local blacklist.
+You can also manage your own local whitelist and blacklist.
 
 The plugin integrates with the `is_email()` function of WordPress.
 It works seamlessly with WooCommerce, Contact Form 7,
@@ -40,6 +40,9 @@ and enter the API token at your WordPress Dashboard > Settings > IsTempMail.
 = Do you send my user emails to other servers? =
 No, we don't. The plugin will only send the domain part of email address to validate.
 
+= Is the plugin free? =
+Yes, the plugin is free to use. IsTempMail also offers free API token which you can use for one blog.
+
 = What happens if the service is down? =
 It will continue to validate emails using local blacklist and whitelist.
 The submitted emails are valid by default.
@@ -52,6 +55,10 @@ This is a little punishment for using temporary email addresses. They won't mind
 which disposable email address was used to flood your website database.
 
 == Changelog ==
+= 1.4 =
+- Update API request format.
+- Separate IsTempMail blacklist and your own local blacklist.
+
 = 1.3 =
 In prior versions, it'll check all emails passed to `is_email()` function.
 You can now change the Hook behavior to check only emails submitted via browsers (POST/GET values).

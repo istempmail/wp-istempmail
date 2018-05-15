@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.3.2
+  Version: 1.4
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -52,6 +52,10 @@ class IsTempMailPlugin
 
         if (!$token || !$this->isValidToken($token)) {
             update_option('istempmail_token', '');
+        }
+
+        if (!get_option('istempmail_blocked_list')) {
+            update_option('istempmail_blocked_list', '', false);
         }
 
         if (!get_option('istempmail_whitelist')) {
@@ -197,6 +201,7 @@ class IsTempMailPlugin
 
     protected function isDea($domain)
     {
+        $blockList = explode("\n", get_option('istempmail_blocked_list'));
         $blacklist = explode("\n", get_option('istempmail_blacklist'));
         $whitelist = explode("\n", get_option('istempmail_whitelist'));
 
@@ -208,7 +213,7 @@ class IsTempMailPlugin
                 return false;
             }
 
-            if (in_array($name, $blacklist)) {
+            if (in_array($name, $blockList) || in_array($name, $blacklist)) {
                 self::$deaFound = true;
                 return true;
             }
@@ -219,7 +224,7 @@ class IsTempMailPlugin
             return false;
         }
 
-        $url = self::API_CHECK . $domain . '?token=' . $token;
+        $url = self::API_CHECK . $token . '/' . $domain;
 
         $response = wp_remote_get($url, array('timeout' => 60));
         $responseBody = wp_remote_retrieve_body($response);
@@ -233,9 +238,9 @@ class IsTempMailPlugin
         if ($dataObj->blocked) {
             self::$deaFound = true;
 
-            $blacklist[] = $dataObj->name;
-            array_filter($blacklist);
-            update_option('istempmail_blacklist', implode("\n", $blacklist));
+            $blockList[] = $dataObj->name;
+            array_filter($blockList);
+            update_option('istempmail_blocked_list', implode("\n", $blockList));
 
             return true;
         }
