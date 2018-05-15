@@ -48,7 +48,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                 </th>
                 <td>
                     <textarea rows="3" class="regular-text" id="istempmail_blacklist" name="istempmail_blacklist"><?php echo esc_attr(get_option('istempmail_blacklist')); ?></textarea>
-                    <p class="description"><?php _e('One domain name per line. We will automatically store detected DEA domain names here.', 'block-temporary-email') ?></p>
+                    <p class="description"><?php _e('One domain name per line.', 'block-temporary-email') ?></p>
                 </td>
             </tr>
             <tr valign="top">
@@ -70,8 +70,19 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </p>
                 </td>
             </tr>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="istempmail_ignored_uris">
+                        <?php _e('No check on URIs', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_ignored_uris')))); ?>)
+                    </label>
+                </th>
+                <td>
+                    <textarea rows="3" class="regular-text" id="istempmail_ignored_uris" name="istempmail_ignored_uris"><?php echo esc_attr(get_option('istempmail_ignored_uris')); ?></textarea>
+                    <p class="description"><?php _e('If the request URI contains these strings (one per line), emails will not be checked.', 'block-temporary-email') ?></p>
+                </td>
+            </tr>
         </table>
-        
+
         <?php submit_button(); ?>
     </form>
 

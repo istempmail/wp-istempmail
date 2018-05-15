@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.4.1
+  Version: 1.4.2
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -70,6 +70,10 @@ class IsTempMailPlugin
         if (get_option('istempmail_check') === false) {
             update_option('istempmail_check', 1, false);
         }
+
+        if (get_option('istempmail_ignored_uris') === false) {
+            update_option('istempmail_ignored_uris', '/wp-admin/admin.php?page=mailpoet-', false);
+        }
     }
 
     public function menu()
@@ -112,6 +116,7 @@ class IsTempMailPlugin
         register_setting('istempmail-settings-group', 'istempmail_token', array($this, 'validateToken'));
         register_setting('istempmail-settings-group', 'istempmail_whitelist', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_blacklist', array($this, 'cleanList'));
+        register_setting('istempmail-settings-group', 'istempmail_ignored_uris', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_check');
     }
 
@@ -190,6 +195,16 @@ class IsTempMailPlugin
 
             if (!stripos($this->requestContents, $domain)) {
                 return true;
+            }
+        }
+
+        $ignoredURIs = explode("\n", get_option('istempmail_ignored_uris'));
+        if($ignoredURIs) {
+            $requestUri = $_SERVER['REQUEST_URI'];
+            foreach ($ignoredURIs as $uri) {
+                if (stripos($requestUri, $uri)!== false) {
+                    return true;
+                }
             }
         }
 
