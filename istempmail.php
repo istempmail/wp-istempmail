@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.4.2
+  Version: 1.4.3
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -21,20 +21,21 @@ class IsTempMailPlugin
 {
     const API_CHECK = 'https://www.istempmail.com/api/check/';
 
-    static $deaFound = false;
+    private $deaFound = false;
 
     public function __construct()
     {
         add_action('plugins_loaded', array($this, 'loadTextDomain'));
 
         register_activation_hook(__FILE__, array($this, 'activate'));
+        register_uninstall_hook(__FILE__, array('IsTempMailPlugin', 'uninstall'));
 
         add_action('admin_menu', array($this, 'menu'));
         add_action('admin_init', array($this, 'settings'));
 
         add_filter('plugin_action_links', array($this, 'addActionLinks'), 10, 5);
 
-        add_filter('is_email', array($this, 'deaEmailCheck'), 10, 2);
+        add_filter('is_email', array($this, 'isEmail'), 10, 2);
 
         add_filter('registration_errors', array($this, 'deaError'));
         add_filter('user_profile_update_errors', array($this, 'deaError'));
@@ -74,6 +75,15 @@ class IsTempMailPlugin
         if (get_option('istempmail_ignored_uris') === false) {
             update_option('istempmail_ignored_uris', '/wp-admin/admin.php?page=mailpoet-', false);
         }
+    }
+
+    public static function uninstall()
+    {
+        delete_option('istempmail_token');
+        delete_option('istempmail_blocked_list');
+        delete_option('istempmail_whitelist');
+        delete_option('istempmail_blacklist');
+        delete_option('istempmail_ignored_uris');
     }
 
     public function menu()
@@ -162,23 +172,57 @@ class IsTempMailPlugin
 
     public function deaError($errors)
     {
-        if (self::$deaFound) {
+        if ($this->deaFound) {
             $message = __('We will not spam or share your email. <strong>Please do not use disposable email address</strong>. Thank you!', 'block-temporary-email');
 
             if ($errors instanceof WP_Error) {
                 $errors->add('disposable_email', $message);
-            } else {
+            } elseif(is_string($errors)) {
                 $errors .= '<br>' . $message;
             }
 
-            self::$deaFound = false;
+            $this->deaFound = false;
         }
 
         return $errors;
     }
 
+    protected function flatten($array)
+    {
+        $result = '';
+
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $result .= $this->flatten($value);
+            } elseif (is_scalar($value)) {
+                $result .= $value;
+            }
+        }
+
+        return $result;
+    }
+
     private $requestContents;
-    public function deaEmailCheck($isEmail, $email)
+
+    protected function getRequestContents()
+    {
+        if ($this->requestContents === null) {
+            $this->requestContents = '';
+            if (!empty($_POST)) {
+                $this->requestContents .= $this->flatten($_POST);
+            }
+
+            if (!empty($_GET)) {
+                $this->requestContents .= $this->flatten($_GET);
+            }
+        }
+
+        return $this->requestContents;
+    }
+
+    private $results = [];
+
+    public function isEmail($isEmail, $email)
     {
         if (!$isEmail) {
             return $isEmail;
@@ -187,13 +231,18 @@ class IsTempMailPlugin
         $parts = explode('@', $email);
         $domain = end($parts);
 
+        if(isset($this->results[$domain])) {
+            return $this->results[$domain];
+        }
+
+        return $this->results[$domain] = $this->deaEmailCheck($domain);
+    }
+
+    public function deaEmailCheck($domain)
+    {
         if (get_option('istempmail_check')) {
             // check if this email is submitted by user
-            if($this->requestContents === null) {
-                $this->requestContents = json_encode($_POST + $_GET);
-            }
-
-            if (!stripos($this->requestContents, $domain)) {
+            if (!stripos($this->getRequestContents(), $domain)) {
                 return true;
             }
         }
@@ -202,17 +251,12 @@ class IsTempMailPlugin
         if($ignoredURIs) {
             $requestUri = $_SERVER['REQUEST_URI'];
             foreach ($ignoredURIs as $uri) {
-                if (stripos($requestUri, $uri)!== false) {
+                if (stripos($requestUri, $uri) !== false) {
                     return true;
                 }
             }
         }
 
-        return !$this->isDea($domain);
-    }
-
-    protected function isDea($domain)
-    {
         $blockList = explode("\n", get_option('istempmail_blocked_list'));
         $blacklist = explode("\n", get_option('istempmail_blacklist'));
         $whitelist = explode("\n", get_option('istempmail_whitelist'));
@@ -222,18 +266,18 @@ class IsTempMailPlugin
             $name = implode('.', array_slice($nameArr, -$i));
 
             if (in_array($name, $whitelist)) {
-                return false;
+                return true;
             }
 
             if (in_array($name, $blockList) || in_array($name, $blacklist)) {
-                self::$deaFound = true;
-                return true;
+                $this->deaFound = true;
+                return false;
             }
         }
 
         $token = get_option('istempmail_token');
         if (!$token) {
-            return false;
+            return true;
         }
 
         $url = self::API_CHECK . $token . '/' . $domain;
@@ -244,23 +288,23 @@ class IsTempMailPlugin
         $dataObj = @json_decode($responseBody);
 
         if (!$dataObj) {
-            return false;
+            return true;
         }
 
         if ($dataObj->blocked) {
-            self::$deaFound = true;
+            $this->deaFound = true;
 
             $blockList[] = $dataObj->name;
             array_filter($blockList);
             update_option('istempmail_blocked_list', implode("\n", $blockList));
 
-            return true;
+            return false;
         }
 
         if (isset($dataObj->unresolvable)) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 }
