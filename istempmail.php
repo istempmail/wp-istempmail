@@ -250,6 +250,10 @@ class IsTempMailPlugin
         $ignoredURIs = explode("\n", get_option('istempmail_ignored_uris'));
         if($ignoredURIs) {
             $requestUri = $_SERVER['REQUEST_URI'];
+            if(strpos($requestUri, 'admin-ajax.php') && isset($_SERVER['HTTP_REFERER'])) {
+                $requestUri = $_SERVER['HTTP_REFERER'];
+            }
+
             foreach ($ignoredURIs as $uri) {
                 if (stripos($requestUri, $uri) !== false) {
                     return true;
