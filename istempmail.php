@@ -141,7 +141,7 @@ class IsTempMailPlugin
 
     public function isValidToken($token)
     {
-        $url = self::API_CHECK . 'example.com?token=' . $token;
+        $url = self::API_CHECK . $token. '/example.com';
 
         $response = wp_remote_get($url, array('timeout' => 60));
         $responseBody = wp_remote_retrieve_body($response);
