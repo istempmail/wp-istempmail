@@ -13,11 +13,11 @@
 # NOPE #
 defined('ABSPATH') or die('Nope nope nope...');
 
-$isTempMailPlugin = new IsTempMailPlugin();
+$isTempMailPlugin = new istempmail();
 
 //End of main flow.
 
-class IsTempMailPlugin
+class istempmail
 {
     const API_CHECK = 'https://www.istempmail.com/api/check/';
 
