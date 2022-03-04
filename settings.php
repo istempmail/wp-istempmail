@@ -19,7 +19,7 @@ defined('ABSPATH') or die('Nope nope nope...');
         <?php do_settings_sections('istempmail-settings'); ?>
 
         <table class="form-table">
-            <tr valign="top">
+            <tr style="vertical-align: top">
                 <th scope="row">
                     <label for="istempmail_token">
                         <?php _e('IsTempMail API token', 'block-temporary-email') ?>
@@ -40,7 +40,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     <p class="description"><?php _e('One domain name per line.', 'block-temporary-email') ?></p>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr style="vertical-align: top">
                 <th scope="row">
                     <label for="istempmail_blacklist">
                         <?php _e('Local black list', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_blacklist')))); ?>)
@@ -51,7 +51,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     <p class="description"><?php _e('One domain name per line.', 'block-temporary-email') ?></p>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr style="vertical-align: top">
                 <th scope="row">
                     <?php _e('Hook behavior', 'block-temporary-email') ?>
                 </th>
@@ -70,7 +70,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </p>
                 </td>
             </tr>
-            <tr valign="top">
+            <tr style="vertical-align: top">
                 <th scope="row">
                     <label for="istempmail_ignored_uris">
                         <?php _e('No check on URIs', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_ignored_uris')))); ?>)
