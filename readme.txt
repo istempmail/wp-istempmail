@@ -2,7 +2,7 @@
 Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
-Tested up to: 4.8
+Tested up to: 5.9
 Stable tag: 1.4
 License: GPLv2 or later
 
