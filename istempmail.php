@@ -242,10 +242,10 @@ class IsTempMailPlugin
             return $this->results[$domain];
         }
 
-        return $this->results[$domain] = $this->deaEmailCheck($domain);
+        return $this->results[$domain] = $this->shouldBeBlocked($domain);
     }
 
-    public function deaEmailCheck($domain)
+    public function shouldBeBlocked($domain)
     {
         // check if this email is submitted by user
         if (get_option('istempmail_check') && !stripos($this->getRequestContents(), $domain)) {
