@@ -96,10 +96,17 @@ defined('ABSPATH') or die('Nope nope nope...');
     </p>
     <p><?php _e('Please help us spread the world!', 'block-temporary-email'); ?></p>
     <p>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=istempmail.com" target="_blank"><?php _e('Share on Facebook', 'block-temporary-email') ?></a> &middot;
-        <a href="https://twitter.com/intent/tweet?text=Block disposable, fake email addresses on WordPress by @istempmail https://wordpress.org/plugins/block-temporary-email/" target="_blank"><?php _e('Share on Twitter', 'block-temporary-email') ?></a> &middot;
-
-        <a href="https://www.facebook.com/istempmail" target="_blank"><?php _e('Like us on Facebook', 'block-temporary-email') ?></a> &middot;
-        <a href="https://twitter.com/istempmail" target="_blank"><?php _e('Follow us on Twitter', 'block-temporary-email') ?></a></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=istempmail.com" target="_blank">
+            <?php _e('Share on Facebook', 'block-temporary-email') ?>
+        </a> &middot;
+        <a href="https://twitter.com/intent/tweet?text=Block disposable, fake email addresses on WordPress by @istempmail https://wordpress.org/plugins/block-temporary-email/" target="_blank">
+            <?php _e('Share on Twitter', 'block-temporary-email') ?>
+        </a> &middot;
+        <a href="https://www.facebook.com/istempmail" target="_blank">
+            <?php _e('Like us on Facebook', 'block-temporary-email') ?>
+        </a> &middot;
+        <a href="https://twitter.com/istempmail" target="_blank">
+            <?php _e('Follow us on Twitter', 'block-temporary-email') ?>
+        </a>
     </p>
 </div>
