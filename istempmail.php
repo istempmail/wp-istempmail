@@ -97,7 +97,7 @@ class IsTempMailPlugin
         );
     }
 
-    function addActionLinks($actions, $plugin_file)
+    public function addActionLinks($actions, $plugin_file)
     {
         static $plugin;
 
@@ -105,7 +105,7 @@ class IsTempMailPlugin
             $plugin = plugin_basename(__FILE__);
         }
 
-        if ($plugin == $plugin_file) {
+        if ($plugin === $plugin_file) {
             $settings = '<a href="' . esc_url(get_admin_url(null, 'options-general.php?page=istempmail-settings')) . '">' . __('Settings', 'block-temporary-email') . '</a>';
 
             $actions = array_merge(array(
@@ -152,7 +152,7 @@ class IsTempMailPlugin
             return false;
         }
 
-        if ($dataObj->name == 'example.com') {
+        if ($dataObj->name === 'example.com') {
             return true;
         }
 
@@ -222,10 +222,17 @@ class IsTempMailPlugin
 
     private $results = [];
 
+    /**
+     * Check if email is valid
+     *
+     * @param bool $isEmail
+     * @param string $email the email to check
+     * @return bool TRUE when the email is valid, FALSE otherwise
+     */
     public function isEmail($isEmail, $email)
     {
         if (!$isEmail) {
-            return $isEmail;
+            return false;
         }
 
         $parts = explode('@', $email);
@@ -240,17 +247,15 @@ class IsTempMailPlugin
 
     public function deaEmailCheck($domain)
     {
-        if (get_option('istempmail_check')) {
-            // check if this email is submitted by user
-            if (!stripos($this->getRequestContents(), $domain)) {
-                return true;
-            }
+        // check if this email is submitted by user
+        if (get_option('istempmail_check') && !stripos($this->getRequestContents(), $domain)) {
+            return true;
         }
 
         $ignoredURIs = explode("\n", get_option('istempmail_ignored_uris'));
         if($ignoredURIs) {
             $requestUri = $_SERVER['REQUEST_URI'];
-            if(strpos($requestUri, 'admin-ajax.php') && isset($_SERVER['HTTP_REFERER'])) {
+            if(isset($_SERVER['HTTP_REFERER']) && strpos($requestUri, 'admin-ajax.php')) {
                 $requestUri = $_SERVER['HTTP_REFERER'];
             }
 
@@ -266,14 +271,15 @@ class IsTempMailPlugin
         $whitelist = explode("\n", get_option('istempmail_whitelist'));
 
         $nameArr = explode('.', $domain);
-        for ($i = 2; $i <= count($nameArr); $i++) {
+        $nameArrCount=count($nameArr);
+        for ($i = 2; $i <= $nameArrCount; $i++) {
             $name = implode('.', array_slice($nameArr, -$i));
 
-            if (in_array($name, $whitelist)) {
+            if (in_array($name, $whitelist, true)) {
                 return true;
             }
 
-            if (in_array($name, $blockList) || in_array($name, $blacklist)) {
+            if (in_array($name, $blockList, true) || in_array($name, $blacklist, true)) {
                 $this->deaFound = true;
                 return false;
             }
