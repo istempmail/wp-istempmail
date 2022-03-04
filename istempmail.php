@@ -143,7 +143,7 @@ class IsTempMailPlugin
     {
         $url = self::API_CHECK . $token. '/example.com';
 
-        $response = wp_remote_get($url, array('timeout' => 60));
+        $response = wp_remote_get($url, array('timeout' => 30));
         $responseBody = wp_remote_retrieve_body($response);
 
         $dataObj = @json_decode($responseBody);
