@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.4.5
+  Version: 1.5.0
   Author: Nguyen An Thuan
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -61,7 +61,7 @@ class istempmail
 
         if (!get_option('istempmail_whitelist')) {
             $email = explode('@', wp_get_current_user()->user_email);
-            update_option('istempmail_whitelist', end($email), false);
+            update_option('istempmail_whitelist', end($email) ."\nmyapp.email", false);
         }
 
         if (!get_option('istempmail_blacklist')) {
@@ -75,6 +75,10 @@ class istempmail
         if (get_option('istempmail_ignored_uris') === false) {
             update_option('istempmail_ignored_uris', '/wp-admin/admin.php?page=mailpoet-', false);
         }
+
+        if (get_option('istempmail_ignored_payload') === false) {
+            update_option('istempmail_ignored_payload', '_xoo_el_form=login', false);
+        }
     }
 
     public static function uninstall()
@@ -84,6 +88,7 @@ class istempmail
         delete_option('istempmail_whitelist');
         delete_option('istempmail_blacklist');
         delete_option('istempmail_ignored_uris');
+        delete_option('istempmail_ignored_payload');
     }
 
     public function menu()
@@ -127,6 +132,7 @@ class istempmail
         register_setting('istempmail-settings-group', 'istempmail_whitelist', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_blacklist', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_ignored_uris', array($this, 'cleanList'));
+        register_setting('istempmail-settings-group', 'istempmail_ignored_payload', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_check');
     }
 
@@ -261,6 +267,17 @@ class istempmail
 
             foreach ($ignoredURIs as $uri) {
                 if (stripos($requestUri, $uri) !== false) {
+                    return true;
+                }
+            }
+        }
+
+        $ignoredPayload = explode("\n", get_option('istempmail_ignored_payload'));
+        if($ignoredPayload) {
+            $queries=http_build_query($_POST);
+
+            foreach ($ignoredPayload as $payload) {
+                if(stripos($payload, $queries) !== false) {
                     return true;
                 }
             }

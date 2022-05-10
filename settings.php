@@ -65,7 +65,7 @@ defined('ABSPATH') or die('Nope nope nope...');
 
                         <label for="istempmail_check_submitted">
                             <input type="radio" id="istempmail_check_submitted" name="istempmail_check" value="1" <?php get_option('istempmail_check') and print('checked') ?> />
-                            <?php _e('Check only emails submitted via browsers', 'block-temporary-email') ?>
+                            <?php _e('Check only emails submitted via browsers (with ignored list below)', 'block-temporary-email') ?>
                         </label>
                     </p>
                 </td>
@@ -79,6 +79,19 @@ defined('ABSPATH') or die('Nope nope nope...');
                 <td>
                     <textarea rows="3" class="regular-text" id="istempmail_ignored_uris" name="istempmail_ignored_uris"><?php echo esc_attr(get_option('istempmail_ignored_uris')); ?></textarea>
                     <p class="description"><?php _e('If the request URI contains these strings (one per line), emails will not be checked.', 'block-temporary-email') ?></p>
+                </td>
+            </tr>
+            <tr style="vertical-align: top">
+                <th scope="row">
+                    <label for="istempmail_ignored_payload">
+                        <?php _e('No check on POST payload', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_ignored_payload')))); ?>)
+                    </label>
+                </th>
+                <td>
+                    <textarea rows="3" class="regular-text" id="istempmail_ignored_payload" name="istempmail_ignored_payload"><?php echo esc_attr(get_option('istempmail_ignored_payload')); ?></textarea>
+                    <p class="description">
+                        <?php _e('If the POST request contains these strings (one per line), emails will not be checked.', 'block-temporary-email') ?>
+                    </p>
                 </td>
             </tr>
         </table>

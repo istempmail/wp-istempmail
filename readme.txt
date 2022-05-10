@@ -3,7 +3,7 @@ Contributors: istempmail
 Tags: istempmail, disposable email, temporary email, fake email, trashmail, mailinator
 Requires at least: 2.9
 Tested up to: 5.9
-Stable tag: 1.4
+Stable tag: 1.5
 License: GPLv2 or later
 
 This plugin will detect and block disposable, temporary, fake email addresses
@@ -55,6 +55,10 @@ This is a little punishment for using temporary email addresses. They won't mind
 which disposable email address was used to flood your website database.
 
 == Changelog ==
+= 1.5 =
+You can now disable email checking on a certain POST payload e.g. add
+`_xoo_el_form=login` to stop checking email on login popup.
+
 = 1.4 =
 - Update API request format.
 - Separate IsTempMail blacklist and your own local blacklist.
