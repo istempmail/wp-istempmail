@@ -179,7 +179,7 @@ class istempmail
     public function deaError($errors)
     {
         if ($this->deaFound) {
-            $message = __('We will not spam or share your email. <strong>Please do not use disposable email address</strong>. Thank you!', 'block-temporary-email');
+            $message = __('We will not spam or share your email. <strong>Please do not use a disposable email address</strong>. Thank you!', 'block-temporary-email');
 
             if ($errors instanceof WP_Error) {
                 $errors->add('disposable_email', $message);
