@@ -8,7 +8,7 @@ defined('ABSPATH') or die('Nope nope nope...');
     <?php if(!get_option('istempmail_token')) { ?>
         <div id="setting-error-settings_updated" class="settings-error error">
             <p>
-                <?php printf(__('Get your API token at <a href="%s">IsTempMail</a>.', 'block-temporary-email'), 'https://www.istempmail.com/'); ?>
+                <?php printf(__('Get your API token at <a href="%s">IsTempMail</a>.', 'block-temporary-email'), 'https://www.istempmail.com/?ref=wp'); ?>
             </p>
         </div>
     <?php } ?>
@@ -103,7 +103,7 @@ defined('ABSPATH') or die('Nope nope nope...');
         <?php
         printf(__('Thank you for using <a href="%s">Block Temporary Email</a> plugin by <a href="%s">IsTempMail</a> .', 'block-temporary-email'),
             'https://wordpress.org/plugins/block-temporary-email/',
-            'https://www.istempmail.com/'
+            'https://www.istempmail.com/?ref=wp'
         );
         ?>
     </p>

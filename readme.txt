@@ -2,7 +2,7 @@
 Contributors: istempmail
 Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
 Requires at least: 2.9
-Tested up to:6.1.1
+Tested up to:6.2
 Stable tag: 1.5.1
 License: GPLv2 or later
 
@@ -16,7 +16,7 @@ It'll give a nice warning message when users are signing up, logging in,
 or changing email to a temporary email.
 
 The plugin checks the domain name using a service named
-[IsTempMail](https://www.istempmail.com/).
+[IsTempMail](https://www.istempmail.com/?ref=wp).
 If a domain name is blocked, it will be stored into a local blacklist.
 You can also manage your own local whitelist and blacklist to allow or
 disallow certain domains.
@@ -27,7 +27,7 @@ Contact Form 7, Gravity Form, Jetpack/Grunion contact forms, as well as
 other formbuilders and ecommerce plugins and WordPress' own registration form.
 
 == Installation ==
-Sign up and get your API token at [IsTempMail](https://www.istempmail.com/sign-up).
+Sign up and get your API token at [IsTempMail](https://www.istempmail.com/sign-up?ref=wp).
 
 Upload the plugin to your blog, then click Activate it under Plugins > Installed Plugins.
 Then enter the API token at your WordPress Dashboard > Settings > IsTempMail.
@@ -58,6 +58,9 @@ the plugin is activated. Be prepared for users contacting you regarding this top
 people who used a disposable email address won't come back to your website though.
 
 == Changelog ==
+= 1.5.2 =
+Tested with WordPress 6.2
+
 = 1.5.1 =
 Tested with WordPress 6.1.1
 Updated a typo and readme
