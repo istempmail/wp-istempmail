@@ -72,6 +72,25 @@ defined('ABSPATH') or die('Nope nope nope...');
             </tr>
             <tr style="vertical-align: top">
                 <th scope="row">
+                    <?php _e('Check scope', 'block-temporary-email') ?>
+                </th>
+                <td>
+                    <p>
+                        <label for="istempmail_check_scope_all">
+                            <input type="radio" id="istempmail_check_scope_all" name="istempmail_check_scope" value="0" <?php get_option('istempmail_check_scope') or print('checked') ?> />
+                            <?php _e('Check all emails', 'block-temporary-email') ?>
+                        </label>
+                        <br />
+
+                        <label for="istempmail_check_scope_nologin">
+                            <input type="radio" id="istempmail_check_scope_nologin" name="istempmail_check_scope" value="1" <?php get_option('istempmail_check_scope') and print('checked') ?> />
+                            <?php _e('Do not check emails during login', 'block-temporary-email') ?>
+                        </label>
+                    </p>
+                </td>
+            </tr>
+            <tr style="vertical-align: top">
+                <th scope="row">
                     <label for="istempmail_ignored_uris">
                         <?php _e('No check on URIs', 'block-temporary-email') ?> (<?php echo count(array_filter(explode("\n", get_option('istempmail_ignored_uris')))); ?>)
                     </label>

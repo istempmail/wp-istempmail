@@ -28,7 +28,7 @@ class istempmail
         add_action('plugins_loaded', array($this, 'loadTextDomain'));
 
         register_activation_hook(__FILE__, array($this, 'activate'));
-        register_uninstall_hook(__FILE__, array('IsTempMailPlugin', 'uninstall'));
+        register_uninstall_hook(__FILE__, array('istempmail', 'uninstall'));
 
         add_action('admin_menu', array($this, 'menu'));
         add_action('admin_init', array($this, 'settings'));
@@ -72,6 +72,10 @@ class istempmail
             update_option('istempmail_check', 1, false);
         }
 
+        if (get_option('istempmail_check_scope') === false) {
+            update_option('istempmail_check_scope', 0, false);
+        }
+
         if (get_option('istempmail_ignored_uris') === false) {
             update_option('istempmail_ignored_uris', '/wp-admin/admin.php?page=mailpoet-', false);
         }
@@ -89,6 +93,8 @@ class istempmail
         delete_option('istempmail_blacklist');
         delete_option('istempmail_ignored_uris');
         delete_option('istempmail_ignored_payload');
+        delete_option('istempmail_check');
+        delete_option('istempmail_check_scope');
     }
 
     public function menu()
@@ -134,6 +140,7 @@ class istempmail
         register_setting('istempmail-settings-group', 'istempmail_ignored_uris', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_ignored_payload', array($this, 'cleanList'));
         register_setting('istempmail-settings-group', 'istempmail_check');
+        register_setting('istempmail-settings-group', 'istempmail_check_scope');
     }
 
     public function validateToken($token)
@@ -228,6 +235,12 @@ class istempmail
 
     private $results = [];
 
+    public static function isLoginRequest()
+    {
+        global $pagenow;
+        return $pagenow === 'wp-login.php';
+    }
+
     /**
      * Check if email is valid
      *
@@ -239,6 +252,13 @@ class istempmail
     {
         if (!$isEmail) {
             return false;
+        }
+
+        $checkScopeNoLogin = get_option('istempmail_check_scope');
+        $isLoginRequest = self::isLoginRequest();
+
+        if($checkScopeNoLogin && $isLoginRequest){
+            return true;
         }
 
         $parts = explode('@', $email);
