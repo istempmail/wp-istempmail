@@ -70,6 +70,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </p>
                 </td>
             </tr>
+            <?php if($this->isFeatureEnabled('SETINGS_SCOPE_CHOOSER')){?>
             <tr style="vertical-align: top">
                 <th scope="row">
                     <?php _e('Check scope', 'block-temporary-email') ?>
@@ -89,6 +90,7 @@ defined('ABSPATH') or die('Nope nope nope...');
                     </p>
                 </td>
             </tr>
+            <?php } ?>
             <tr style="vertical-align: top">
                 <th scope="row">
                     <label for="istempmail_ignored_uris">

@@ -60,7 +60,7 @@ people who used a disposable email address won't come back to your website thoug
 == Changelog ==
 = 1.6 =
 Fix a bug during plugin uninstallation
-Add option to disable validating logins
+Add option to disable validating logins (premium)
 
 = 1.5.2 =
 Tested with WordPress 6.2
