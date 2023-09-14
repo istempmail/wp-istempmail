@@ -2,8 +2,8 @@
 Contributors: istempmail
 Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
 Requires at least: 2.9
-Tested up to: 6.2
-Stable tag: 1.6
+Tested up to: 6.3.1
+Stable tag: 1.6.1
 License: GPLv2 or later
 
 This plugin stops users from giving you disposable or fake email addresses when signing up.
@@ -58,6 +58,9 @@ the plugin is activated. Be prepared for users contacting you regarding this top
 people who used a disposable email address won't come back to your website though.
 
 == Changelog ==
+= 1.6.1 =
+Tested with WordPress 6.3.1
+
 = 1.6 =
 Fix a bug during plugin uninstallation
 Add option to disable validating logins (premium)
