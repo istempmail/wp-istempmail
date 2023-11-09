@@ -2,7 +2,7 @@
 Contributors: istempmail
 Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
 Requires at least: 2.9
-Tested up to: 6.4
+Tested up to: 6.4.1
 Stable tag: 1.6.3
 License: GPLv2 or later
 
@@ -59,7 +59,7 @@ people who used a disposable email address won't come back to your website thoug
 
 == Changelog ==
 = 1.6.3 =
-Tested with WordPress 6.4
+Tested with WordPress 6.4.1
 
 = 1.6.2 =
 Tested with WordPress 6.3.2
