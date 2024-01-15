@@ -2,8 +2,8 @@
 Contributors: istempmail
 Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
 Requires at least: 2.9
-Tested up to: 6.4.1
-Stable tag: 1.6.3
+Tested up to: 6.4.2
+Stable tag: 1.7
 License: GPLv2 or later
 
 This plugin stops users from giving you disposable or fake email addresses when signing up.
@@ -23,7 +23,7 @@ disallow certain domains.
 
 The plugin integrates with the WordPress built-in function `is_email()`.
 It works seamlessly with other plugins including WooCommerce,
-Contact Form 7, Gravity Form, Jetpack/Grunion contact forms, as well as
+Contact Form 7, Gravity Form, Jetpack/Grunion contact forms, Kadence Blocks Forms as well as
 other formbuilders and ecommerce plugins and WordPress' own registration form.
 
 == Installation ==
@@ -38,7 +38,7 @@ Then enter the API token at your WordPress Dashboard > Settings > IsTempMail.
 3. Settings to manage your own blacklist and whitelist
 
 == Frequently Asked Questions ==
-= Do you send my user emails to other servers? =
+= Do you send my user email addresses to other servers? =
 No, we don't. The plugin will only send the domain part of email address to validate.
 
 = Is the plugin free? =
@@ -58,6 +58,10 @@ the plugin is activated. Be prepared for users contacting you regarding this top
 people who used a disposable email address won't come back to your website though.
 
 == Changelog ==
+= 1.7 =
+Add support for forms built with Kadence Blocks
+Tested with WordPress 6.4.2
+
 = 1.6.3 =
 Tested with WordPress 6.4.1
 
