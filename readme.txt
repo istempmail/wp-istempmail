@@ -3,7 +3,7 @@ Contributors: istempmail
 Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
 Requires at least: 2.9
 Tested up to: 6.4.2
-Stable tag: 1.7
+Stable tag: 1.7.1
 License: GPLv2 or later
 
 This plugin stops users from giving you disposable or fake email addresses when signing up.
@@ -58,6 +58,9 @@ the plugin is activated. Be prepared for users contacting you regarding this top
 people who used a disposable email address won't come back to your website though.
 
 == Changelog ==
+= 1.7.1 =
+Add support for advanced forms built with Kadence Blocks
+
 = 1.7 =
 Add support for forms built with Kadence Blocks
 Tested with WordPress 6.4.2

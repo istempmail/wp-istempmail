@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/?ref=wp">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.7
+  Version: 1.7.1
   Author: istempmail.com
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -41,9 +41,12 @@ class istempmail
         add_filter( 'user_profile_update_errors', array( $this, 'deaError' ) );
         add_filter( 'login_errors', array( $this, 'deaError' ) );
 
-        // For Kadence Blocks Forms
+        // For Kadence Blocks forms
         add_filter( 'kadence_blocks_form_submission_success', array( $this, 'kadenceSuccess' ), 10, 5 );
         add_filter( 'kadence_blocks_form_submission_messages', array( $this, 'kadenceMessages' ) );
+        // Kadence Blocks advanced forms
+        add_filter( 'kadence_blocks_advanced_form_submission_success', array( $this, 'kadenceSuccess' ), 10, 5 );
+        add_filter( 'kadence_blocks_advanced_form_submission_messages', array( $this, 'kadenceAdvancedMessages' ) );
     }
 
     public function kadenceSuccess( $success, $form_args, $fields, $form_id, $post_id ) {
@@ -65,10 +68,22 @@ class istempmail
         $this->isKadenceFormValidation = true;
         $rtn                           = $messages;
         if ( $this->deaFound ) {
-            $rtn[0]['error'] = __( 'We will not spam or share your email. <strong>Please do not use a disposable email address</strong>. Thank you!', 'block-temporary-email' );
+            $rtn[0]['error'] = $this->getDeaFoundMessage();
         }
-
         return $rtn;
+    }
+
+    public function kadenceAdvancedMessages( $messages ) {
+        $this->isKadenceFormValidation = true;
+        $rtn                           = $messages;
+        if ( $this->deaFound ) {
+            $rtn['error'] = $this->getDeaFoundMessage();
+        }
+        return $rtn;
+    }
+
+    private function getDeaFoundMessage(){
+        return __( 'We will not send spam or share your email. <strong>Please do not use a disposable email address.</strong> Thank you!', 'block-temporary-email' );
     }
 
     public function loadTextDomain() {
@@ -224,7 +239,7 @@ class istempmail
     public function deaError($errors)
     {
         if ($this->deaFound) {
-            $message = __('We will not spam or share your email. <strong>Please do not use a disposable email address</strong>. Thank you!', 'block-temporary-email');
+            $message = $this->getDeaFoundMessage();
 
             if ($errors instanceof WP_Error) {
                 $errors->add('disposable_email', $message);
