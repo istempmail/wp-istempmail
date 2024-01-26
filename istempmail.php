@@ -3,7 +3,7 @@
   Plugin Name: Block Temporary Email
   Plugin URI: https://wordpress.org/plugins/block-temporary-email/
   Description: This plugin will <strong>detect and block disposable, temporary, fake email address</strong> every time an email is submitted. It checks email domain name using <a href="https://www.istempmail.com/?ref=wp">IsTempMail API</a>, and maintains its own local blacklist.
-  Version: 1.7.1
+  Version: 1.7.2
   Author: istempmail.com
   Author URI: https://www.istempmail.com/
   License: GPLv2 or later
@@ -47,6 +47,8 @@ class istempmail
          *
          * Kadence does not offer a proper way to hook into form data validatation. This means we
          * can only provide limited support for it.
+         *
+         * Tested up to Kadence Blocks 3.2.19
          *
          * Current solution is this:
          * - we detect the form submit ajax
