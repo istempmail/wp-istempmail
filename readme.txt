@@ -58,6 +58,9 @@ the plugin is activated. Be prepared for users contacting you regarding this top
 people who used a disposable email address won't come back to your website though.
 
 == Changelog ==
+= 1.7.2 =
+Improve support for forms and advanced forms Kadence Blocks
+
 = 1.7.1 =
 Add support for advanced forms built with Kadence Blocks
 
