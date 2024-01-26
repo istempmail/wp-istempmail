@@ -22,7 +22,8 @@ class istempmail
     const API_CHECK = 'https://www.istempmail.com/api/check/';
 
     private $deaFound = false;
-    private $isKadenceFormValidation = false;
+    private $isKadenceFormSubmitRequest = false;
+    private $isKadenceDeaFound = false;
 
     public function __construct() {
         add_action( 'plugins_loaded', array( $this, 'loadTextDomain' ) );
@@ -41,42 +42,97 @@ class istempmail
         add_filter( 'user_profile_update_errors', array( $this, 'deaError' ) );
         add_filter( 'login_errors', array( $this, 'deaError' ) );
 
+        /**
+         * Kadence support
+         *
+         * Kadence does not offer a proper way to hook into form data validatation. This means we
+         * can only provide limited support for it.
+         *
+         * Current solution is this:
+         * - we detect the form submit ajax
+         * - we add a filter for sanitize_email
+         * - in the sanitize filter we test for temporary emails and obfuscate the email if it is a temporary email
+         * - on subsequent calls to success and messages filters we set success to false and a message for the user (if
+         *   a temp email was detected)
+         * - the user is asked to provide a non-disposable address
+         * - no email is sent to the disposable address
+         * DRAWBACK:
+         * - the sanitization result is ignored by Kadence, all form actions run as if the email were ok
+         * - this means a form submission received email is sent to the admin
+         */
+
         // For Kadence Blocks forms
+        add_action('wp_ajax_kb_process_ajax_submit', array($this, 'kadenceAjaxSubmit'), 1);
+        add_action('wp_ajax_nopriv_kb_process_ajax_submit', array($this, 'kadenceAjaxSubmit'), 1);
         add_filter( 'kadence_blocks_form_submission_success', array( $this, 'kadenceSuccess' ), 10, 5 );
         add_filter( 'kadence_blocks_form_submission_messages', array( $this, 'kadenceMessages' ) );
         // Kadence Blocks advanced forms
+        add_action('wp_ajax_kb_process_advanced_form_submit', array($this, 'kadenceAjaxSubmit'), 1);
+        add_action('wp_ajax_nopriv_kb_process_advanced_form_submit', array($this, 'kadenceAjaxSubmit'), 1);
         add_filter( 'kadence_blocks_advanced_form_submission_success', array( $this, 'kadenceSuccess' ), 10, 5 );
         add_filter( 'kadence_blocks_advanced_form_submission_messages', array( $this, 'kadenceAdvancedMessages' ) );
     }
 
-    public function kadenceSuccess( $success, $form_args, $fields, $form_id, $post_id ) {
-        $this->isKadenceFormValidation = true;
-        foreach ( $fields as $field ) {
-            if ( $field['type'] == 'email' ) {
-                $this->isEmail( true, $field['value'] );
-            }
+    public function kadenceAjaxSubmit(){
+        // kadence form submit detected
+        $this->isKadenceFormSubmitRequest = true;
+        // we want to run after any other sanitization
+        add_filter('sanitize_email', array($this, 'kadenceSanitizeEmailCallback'), 999);
+    }
+
+    public function kadenceSanitizeEmailCallback($email){
+        $rtn = $email;
+        $this->isEmail(true, $email);
+        if($this->deaFound){
+            $this->isKadenceDeaFound = true;
+            // quirky:
+            // we 'sanitize' this to an invalid value because cadence will not check the sanitization result
+            // and execues all form actions regardless. e.g. form submission notification emails are always sent.
+            // by using an invalid email we can aovid having email sent to the entered address. and the submission
+            // notification tells the admin about the disposable address
+            $obfuscatedEmail =  str_replace('@', "_at_", str_replace('.', "_dot_", $email));
+            $rtn = "Disposable email entered. User was shown an error and asked to submit again. ($obfuscatedEmail)";
+            // for advanced forms we can filter form fields, so we change the first of the text or text area fields
+            // to contain a note about the disposable address
+            add_filter('kadence_blocks_advanced_form_processed_fields', array($this, 'kadenceFilterFormFields'), 1);
         }
+        return $rtn;
+    }
+
+    public function kadenceFilterFormFields($fields){
+        $rtn = [];
+        $messageWasAlreadyAdded = false;
+        foreach($fields as $field){
+            if($field['type'] == 'textarea' || $field['type'] == 'text'){
+                if(! $messageWasAlreadyAdded) {
+                    $msg                    = "NOTE: user tried to submit this with a disposable email address. The user was shown an error message and asked to provide a different email.\n\n";
+                    $field['value']         = $msg . $field['value'];
+                    $messageWasAlreadyAdded = true;
+                }
+            }
+            $rtn[] = $field;
+        }
+        return $rtn;
+    }
+    public function kadenceSuccess( $success, $form_args, $fields, $form_id, $post_id ) {
         $rtn = $success;
-        if ( $this->deaFound ) {
+        if($this->isKadenceFormSubmitRequest && $this->isKadenceDeaFound) {
             $rtn = false;
         }
-
         return $rtn;
     }
 
     public function kadenceMessages( $messages ) {
-        $this->isKadenceFormValidation = true;
-        $rtn                           = $messages;
-        if ( $this->deaFound ) {
+        $rtn = $messages;
+        if ($this->isKadenceFormSubmitRequest && $this->isKadenceDeaFound ) {
             $rtn[0]['error'] = $this->getDeaFoundMessage();
         }
         return $rtn;
     }
 
     public function kadenceAdvancedMessages( $messages ) {
-        $this->isKadenceFormValidation = true;
-        $rtn                           = $messages;
-        if ( $this->deaFound ) {
+        $rtn = $messages;
+        if ( $this->isKadenceFormSubmitRequest && $this->isKadenceDeaFound) {
             $rtn['error'] = $this->getDeaFoundMessage();
         }
         return $rtn;
@@ -323,7 +379,7 @@ class istempmail
 
         // check if this email was submitted by user
         // or submitted by Kadence Blocks form which removes email from global request data
-        if ( get_option( 'istempmail_check' ) && ! stripos( $this->getRequestContents(), $domain ) && ! $this->isKadenceFormValidation ) {
+        if ( get_option( 'istempmail_check' ) && ! stripos( $this->getRequestContents(), $domain ) && ! $this->isKadenceFormSubmitRequest ) {
             return true;
         } else {
             return $this->results[ $domain ] = $this->shouldBeBlocked( $domain );
