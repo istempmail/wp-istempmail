@@ -1,6 +1,6 @@
 === Block Temporary Email ===
 Contributors: istempmail
-Tags: validate email, check email, disposable email, temporary email, fake email, trashmail, mailinator, istempmail
+Tags: validate email, check email, disposable email, temporary email, fake email
 Requires at least: 2.9
 Tested up to: 6.8.2
 Stable tag: 1.7.5
